@@ -11,12 +11,13 @@ import {TestBed} from '@angular/core/testing';
 import {By, DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 describe('attribute creation', () => {
-  it('should create an element', () => {
+  fit('should create an element', () => {
     @Component({
       template: `<div id="test" title="Hello"></div>`,
     })
     class Comp {
     }
+    // test
 
     TestBed.configureTestingModule({declarations: [Comp]});
     const fixture = TestBed.createComponent(Comp);
