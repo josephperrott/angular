@@ -28,7 +28,7 @@
     "test-non-ivy": "bazel test --build_tag_filters=-ivy-only --test_tag_filters=-ivy-only",
     "test-fixme-ivy-aot": "bazel test --config=ivy --build_tag_filters=-no-ivy-aot --test_tag_filters=-no-ivy-aot",
     "list-fixme-ivy-targets": "bazel query --output=label 'attr(\"tags\", \"\\[.*fixme-ivy.*\\]\", //...) except kind(\"sh_binary\", //...) except kind(\"devmode_js_sources\", //...)' | sort",
-    "bazel": "bazel",
+    "bazel": "ts-node tools/bazel-runner/bazel.ts",
     "//circleci-win-comment": "See the test-win circleci job for why these are needed. If they are not needed anymore, remove them.",
     "circleci-win-ve": "bazel test --build_tag_filters=-ivy-only --test_tag_filters=-ivy-only,-browser:chromium-local //packages/compiler-cli/...",
     "circleci-win-ivy": "bazel test --config=ivy --build_tag_filters=-no-ivy-aot,-fixme-ivy-aot --test_tag_filters=-no-ivy-aot,-fixme-ivy-aot,-browser:chromium-local //packages/compiler-cli/..."
@@ -123,6 +123,7 @@
     "tsickle": "0.37.1",
     "tslib": "^1.10.0",
     "tslint": "5.7.0",
+    "ts-node": "^8.5.4",
     "typescript": "~3.6.4",
     "xhr2": "0.1.4",
     "yargs": "13.1.0"
