@@ -1,4 +1,5 @@
 import {exec} from 'shelljs';
+import {getUserConfig} from '../dev-infra/config';
 import {parseLogFiles} from './parse-execution-log-file';
 
 
@@ -11,7 +12,9 @@ const bazelCommand = process.argv[2] || '';
 const allParameters = process.argv.slice(3);
 const santizedBazelParameters =
     allParameters.filter(param => param !== DIAGNOSTICS_FLAG).map(a => `"${a}"`).join(' ');
-let showDiagnostics = !!allParameters.find(param => param === DIAGNOSTICS_FLAG);
+let showDiagnostics =
+    (!!allParameters.find(param => param === DIAGNOSTICS_FLAG) ||
+     (getUserConfig().bazelDiagnostics && getUserConfig().bazelDiagnostics.enabled));
 
 async function runBazel() {
 
