@@ -12,6 +12,7 @@ import {buildPullapproveParser} from './pullapprove/cli';
 import {buildCommitMessageParser} from './commit-message/cli';
 import {buildFormatParser} from './format/cli';
 import {buildReleaseParser} from './release/cli';
+import {buildPrParser} from './pr/cli';
 
 yargs.scriptName('ng-dev')
     .demandCommand()
@@ -19,6 +20,7 @@ yargs.scriptName('ng-dev')
     .command('commit-message <command>', '', buildCommitMessageParser)
     .command('format <command>', '', buildFormatParser)
     .command('pullapprove <command>', '', buildPullapproveParser)
+    .command('pr <command>', '', buildPrParser)
     .command('release <command>', '', buildReleaseParser)
     .command('ts-circular-deps <command>', '', tsCircularDependenciesBuilder)
     .wrap(120)
