@@ -25,6 +25,7 @@
   "peerDependencies": {
     "@bazel/buildifier": "<from-root>",
     "clang-format": "<from-root>",
+    "prettier": "<from-root>",
     "ts-node": "<from-root>",
     "tslib": "<from-root>",
     "typescript": "<from-root>"
