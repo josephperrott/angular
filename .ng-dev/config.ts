@@ -91,6 +91,7 @@ const merge = () => {
     claSignedLabel: 'cla: yes',
     mergeReadyLabel: /^PR action: merge(-assistance)?/,
     commitMessageFixupLabel: 'commit message fixup',
+    requiredGroupMembership: 139426,
     labels: [
       {
         pattern: 'PR target: master-only',

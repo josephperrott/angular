@@ -11,6 +11,7 @@ import {spawnSync, SpawnSyncOptions, SpawnSyncReturns} from 'child_process';
 
 import {getConfig, getRepoBaseDir, NgDevConfig} from './config';
 import {info, yellow} from './console';
+import { numericLiteral } from '@babel/types';
 
 
 /** Github response type extended to include the `x-oauth-scopes` headers presence. */
@@ -66,6 +67,8 @@ export class GitClient {
    * sanitizing the token from Git child process output.
    */
   private _githubTokenRegex: RegExp|null = null;
+  /** The login of the currently authenticated user. */
+  private authenticatedUser: string|null = null;
 
   constructor(
       private _githubToken?: string, private _config: Pick<NgDevConfig, 'github'> = getConfig()) {
@@ -123,6 +126,11 @@ export class GitClient {
     }
 
     return result;
+  }
+
+  /** Retrieve the currently authenticated Github users login name. */
+  async getAuthenticatedUser() {
+    return this.authenticatedUser = this.authenticatedUser || (await this.api.users.getAuthenticated()).data.login;
   }
 
   /** Whether the given branch contains the specified SHA. */

@@ -9,7 +9,7 @@
 
 import {getRepoBaseDir} from '../../utils/config';
 import {error, green, info, promptConfirm, red, yellow} from '../../utils/console';
-import {GithubApiRequestError} from '../../utils/git';
+import {GithubApiRequestError, GitClient} from '../../utils/git';
 
 import {loadAndValidateConfig, MergeConfigWithRemote} from './config';
 import {MergeResult, MergeStatus, PullRequestMergeTask} from './task';
@@ -46,7 +46,13 @@ export async function mergePullRequest(
     config = _config!;
   }
 
+  await currentUserCanPerformMerge(new GitClient(githubToken));
+  process.exit();
+
   const api = new PullRequestMergeTask(projectRoot, config, githubToken);
+  if (!await currentUserCanPerformMerge(api.git)) {
+    throw Error('You cant do that!');
+  }
 
   // Perform the merge. Force mode can be activated through a command line flag.
   // Alternatively, if the merge fails with non-fatal failures, the script
@@ -127,5 +133,7 @@ export async function mergePullRequest(
       default:
         throw Error(`Unexpected merge result: ${status}`);
     }
+
   }
+
 }
