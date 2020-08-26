@@ -10,7 +10,7 @@ import * as Octokit from '@octokit/rest';
 import {spawnSync, SpawnSyncOptions, SpawnSyncReturns} from 'child_process';
 
 import {getConfig, getRepoBaseDir, NgDevConfig} from '../config';
-import {info, yellow} from '../console';
+import {debug, yellow} from '../console';
 import {GithubClient} from './github';
 
 /** Github response type extended to include the `x-oauth-scopes` headers presence. */
@@ -92,7 +92,7 @@ export class GitClient {
     // To improve the debugging experience in case something fails, we print all executed
     // Git commands. Note that we do not want to print the token if is contained in the
     // command. It's common to share errors with others if the tool failed.
-    info('Executing: git', this.omitGithubTokenFromMessage(args.join(' ')));
+    debug('Executing: git', this.omitGithubTokenFromMessage(args.join(' ')));
 
     const result = spawnSync('git', args, {
       cwd: this._projectRoot,
