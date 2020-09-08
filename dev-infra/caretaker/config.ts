@@ -10,6 +10,7 @@ import {assertNoErrors, getConfig, NgDevConfig} from '../utils/config';
 
 export interface CaretakerConfig {
   githubQueries?: {name: string; query: string;}[];
+  caretakerTeam?: string;
 }
 
 /** Retrieve and validate the config as `CaretakerConfig`. */

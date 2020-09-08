@@ -13,12 +13,6 @@ import {GitClient} from '../../utils/git';
 import {CaretakerConfig} from '../config';
 
 
-interface GithubInfoQuery {
-  [key: string]: {
-    issueCount: number,
-  };
-}
-
 /** Retrieve the number of matching issues for each github query. */
 export async function printGithubTasks(git: GitClient, config: CaretakerConfig) {
   if (!config.githubQueries?.length) {
@@ -53,4 +47,30 @@ async function getGithubInfo(git: GitClient, {githubQueries: queries = []}: Care
   Object.values(results).forEach((result, i) => {
     info(`${queries[i]?.name.padEnd(25)} ${result.issueCount}`);
   });
+}
+
+/**
+ * Retrieve the current caretaker's from Github and print the results to the console, if a Github
+ * team has been provided in the config.
+ */
+export async function printCaretakerGroupMembers(git: GitClient, {caretakerTeam}: CaretakerConfig) {
+  if (!caretakerTeam) {
+    debug('No Github team configured to represent current caretaker(s), skipping.');
+    return;
+  }
+
+  const query = {
+    organization: params({login: `"${git.remoteConfig.owner}"`}, {
+      team: params(
+          {slug: `"${caretakerTeam}"`},
+          {members: params({first: 100}, {nodes: [{login: types.string}]})})
+    })
+  };
+  /** The results of the generated github query. */
+  const results = await git.github.graphql.query(query);
+  info.group('Current Caretakers')
+  results.organization.team.members.nodes.forEach(user => {
+    info(`  - ${user.login}`);
+  });
+  info.groupEnd();
 }
