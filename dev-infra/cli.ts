@@ -17,10 +17,12 @@ import {buildPullapproveParser} from './pullapprove/cli';
 import {buildReleaseParser} from './release/cli';
 import {tsCircularDependenciesBuilder} from './ts-circular-dependencies/index';
 import {captureLogOutputForCommand} from './utils/console';
+import {buildMiscParser} from './misc/cli';
 
 yargs.scriptName('ng-dev')
     .middleware(captureLogOutputForCommand)
     .demandCommand()
+    //.showHelpOnFail(false)
     .recommendCommands()
     .command('commit-message <command>', '', buildCommitMessageParser)
     .command('format <command>', '', buildFormatParser)
@@ -30,6 +32,7 @@ yargs.scriptName('ng-dev')
     .command('ts-circular-deps <command>', '', tsCircularDependenciesBuilder)
     .command('caretaker <command>', '', buildCaretakerParser)
     .command('ngbot <command>', false, buildNgbotParser)
+    .command('misc <command', '', buildMiscParser)
     .wrap(120)
     .strict()
     .parse();
