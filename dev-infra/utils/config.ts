@@ -126,6 +126,28 @@ function readConfigFile(configPath: string, returnEmptyObjectOnError = false): o
   }
 }
 
+
+export function loadG3File(path: string) {
+  if (require.extensions['.ts'] === undefined && existsSync(`${path}.ts`) &&
+      isTsNodeAvailable()) {
+    // Ensure the module target is set to `commonjs`. This is necessary because the
+    // dev-infra tool runs in NodeJS which does not support ES modules by default.
+    // Additionally, set the `dir` option to the directory that contains the configuration
+    // file. This allows for custom compiler options (such as `--strict`).
+    require('ts-node').register(
+        {dir: dirname(path), transpileOnly: true, compilerOptions: {module: 'commonjs'}});
+  }
+
+  try {
+    return require(path);
+  } catch (e) {
+    error(`Could not read configuration file at ${path}.`);
+    error(e);
+    process.exit(1);
+  }
+
+}
+
 /**
  * Asserts the provided array of error messages is empty. If any errors are in the array,
  * logs the errors and exit the process as a failure.

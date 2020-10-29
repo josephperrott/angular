@@ -145,6 +145,24 @@ function readConfigFile(configPath, returnEmptyObjectOnError) {
         process.exit(1);
     }
 }
+function loadG3File(path$1) {
+    if (require.extensions['.ts'] === undefined && fs.existsSync(path$1 + ".ts") &&
+        isTsNodeAvailable()) {
+        // Ensure the module target is set to `commonjs`. This is necessary because the
+        // dev-infra tool runs in NodeJS which does not support ES modules by default.
+        // Additionally, set the `dir` option to the directory that contains the configuration
+        // file. This allows for custom compiler options (such as `--strict`).
+        require('ts-node').register({ dir: path.dirname(path$1), transpileOnly: true, compilerOptions: { module: 'commonjs' } });
+    }
+    try {
+        return require(path$1);
+    }
+    catch (e) {
+        error("Could not read configuration file at " + path$1 + ".");
+        error(e);
+        process.exit(1);
+    }
+}
 /**
  * Asserts the provided array of error messages is empty. If any errors are in the array,
  * logs the errors and exit the process as a failure.
@@ -1412,11 +1430,15 @@ function checkServiceStatuses(githubToken) {
         const git = new GitClient(githubToken, config);
         // Prevent logging of the git commands being executed during the check.
         GitClient.LOG_COMMANDS = false;
+        const internalCaretakerChecks = loadG3File('/google/src/cloud/jperrott/caretaker-internal/google3/javascript/angular2/tools/ng-dev-internal/caretaker-check');
         // TODO(josephperrott): Allow these checks to be loaded in parallel.
         yield printServiceStatuses();
         yield printGithubTasks(git, config.caretaker);
         yield printG3Comparison(git);
         yield printCiStatus(git);
+        for (const printerCall of internalCaretakerChecks.printerCalls) {
+            yield printerCall(5710658318368768);
+        }
     });
 }
 
