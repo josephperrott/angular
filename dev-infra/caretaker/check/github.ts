@@ -81,7 +81,7 @@ async function getGithubQueryResults(
                                           queryName: queries[i].name,
                                           count: result.issueCount,
                                           queryUrl: encodeURI(`https://github.com/${owner}/${
-                                              repo}/issues?q=${queries[i]?.query}`),
+                                              repo}/issues?q=${queries[i].query}`),
                                           matchedUrls: result.nodes.map(node => node.url)
                                         }));
 }

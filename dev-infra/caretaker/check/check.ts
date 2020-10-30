@@ -7,10 +7,10 @@
  */
 
 import {GitClient} from '../../utils/git/index';
-import {getCaretakerConfig} from '../config';
+import {CaretakerConfig, getCaretakerConfig} from '../config';
 
-import {getCiStatusPrinter} from './ci';
-import {getG3ComparisonPrinter} from './g3';
+import {CiModule} from './ci';
+import {G3Module} from './g3';
 import {getGithubTaskPrinter} from './github';
 import {getServicesStatusPrinter} from './services';
 
@@ -24,12 +24,9 @@ export async function checkServiceStatuses(githubToken: string) {
   // Prevent logging of the git commands being executed during the check.
   GitClient.LOG_COMMANDS = false;
 
-  const printers = await Promise.all([
-    getServicesStatusPrinter(), getGithubTaskPrinter(git, config.caretaker),
-    getG3ComparisonPrinter(git), getCiStatusPrinter(git)
-  ]);
+  const modules = [CiModule, G3Module].map(module => new module(git, config as any as CaretakerConfig));
 
-  for (const printer of printers) {
-    printer && printer();
-  }
+  //await Promise.all(modules.map(module => module.data));
+
+  modules.forEach(module => module.printToTerminal());
 }

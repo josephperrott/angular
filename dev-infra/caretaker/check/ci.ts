@@ -7,58 +7,79 @@
  */
 
 import fetch from 'node-fetch';
-import {fetchActiveReleaseTrains} from '../../release/versioning/index';
+import {fetchActiveReleaseTrains, ReleaseTrain} from '../../release/versioning/index';
 
 import {bold, debug, info} from '../../utils/console';
 import {GitClient} from '../../utils/git/index';
+import {CaretakerConfig} from '../config';
+import {BaseModule} from './base';
 
 
-/** The results of checking the status of CI.  */
-interface StatusCheckResult {
-  status: 'success'|'failed';
-}
+type CiBranchStatus = string|'success'|'failed'|null;
 
-/** Retrieve and log status of CI for the project. */
-export async function getCiStatusPrinter(git: GitClient) {
-  const releaseTrains = await fetchActiveReleaseTrains({api: git.github, ...git.remoteConfig});
+type CiData = Array<{active: boolean; name: string; label: string; status: CiBranchStatus;}>;
 
-  const ciStatusResults =
-      await Promise.all(Object.entries(releaseTrains).map(async ([trainName, train]) => {
+
+
+export class CiModule extends BaseModule<CiData> {
+  constructor(git: GitClient, config: CaretakerConfig) {
+    super(git, config);
+  }
+
+  async retrieveData() {
+    const releaseTrains =
+        await fetchActiveReleaseTrains({api: this.git.github, ...this.git.remoteConfig});
+
+
+    this.resolve(await Promise.all(Object.entries(releaseTrains).map(async ([trainName, train]: [
+                                                                       string, ReleaseTrain|null
+                                                                     ]) => {
+      if (train === null) {
         return {
-          label: `${trainName.padEnd(6)} (${train.branchName})`,
-          status: await getStatusOfBranch(git, train.branchName),
+          active: false,
+          name: '',
+          label: '',
+          status: null,
         };
-      }));
+      }
+      return {
+        active: true,
+        name: train.branchName,
+        label: `${trainName} (${train.branchName})`,
+        status: await this.getBrancheStatusFromCi(train.branchName),
+      };
+    })));
+  }
 
-  return () => {
+  async printToTerminal() {
+    const data = await this.data;
+    const minLabelLength = Math.max(...data.map(result => result.label.length));
     info.group(bold(`CI`));
-    ciStatusResults.forEach(result => printStatus(result.label, result.status));
+    data.forEach(result => {
+      if (result.active === false) {
+        debug(`No active release train for ${result.name}`);
+      }
+      const label = result.label.padEnd(minLabelLength);
+      if (result.status === null) {
+        info(`${result.name} was not found on CircleCI`);
+      } else if (result.status === 'success') {
+        info(`${label} ✅`);
+      } else {
+        info(`${label} ❌`);
+      }
+    });
     info.groupEnd();
-  };
-}
-
-/** Log the status of CI for a given branch to the console. */
-async function printStatus(label: string, status: StatusCheckResult|null) {
-  const branchName = label.padEnd(16);
-  if (status === null) {
-    info(`${branchName} was not found on CircleCI`);
-  } else if (status.status === 'success') {
-    info(`${branchName} ✅`);
-  } else {
-    info(`${branchName} ❌`);
   }
-}
 
-/** Get the CI status of a given branch from CircleCI. */
-async function getStatusOfBranch(git: GitClient, branch: string): Promise<StatusCheckResult|null> {
-  const {owner, name} = git.remoteConfig;
-  const url = `https://circleci.com/gh/${owner}/${name}/tree/${branch}.svg?style=shield`;
-  const result = await fetch(url).then(result => result.text());
+  /** Get the CI status of a given branch from CircleCI. */
+  private async getBrancheStatusFromCi(branch: string): Promise<CiBranchStatus> {
+    const {owner, name} = this.git.remoteConfig;
+    const url = `https://circleci.com/gh/${owner}/${name}/tree/${branch}.svg?style=shield`;
+    const result = await fetch(url).then(result => result.text());
 
-  if (result && !result.includes('no builds')) {
-    return {
-      status: result.includes('passing') ? 'success' : 'failed',
-    };
+    if (result && !result.includes('no builds')) {
+      return result.includes('passing') ? 'success' : 'failed';
+    }
+    return null;
   }
-  return null;
 }
