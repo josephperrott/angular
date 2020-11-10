@@ -19,12 +19,12 @@ const headerEnd =
  * @param files The partially compiled files to be rendered.
  */
 export function renderGoldenPartial(files: PartiallyCompiledFile[]): string {
-  let output = '';
-  for (const file of files) {
-    const header = headerStart + file.path + headerEnd;
-    output += `${header}\n${file.content}\n`;
-  }
-  return output;
+  return files
+      .map(file => {
+        const header = headerStart + file.path + headerEnd;
+        return `${header}\n${file.content}`;
+      })
+      .join('\n');
 }
 
 /**

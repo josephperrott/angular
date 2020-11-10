@@ -1,4 +1,4 @@
-load("//tools:defaults.bzl", "nodejs_binary", "ts_library")
+load("//tools:defaults.bzl", "ts_library")
 
 ts_library(
     name = "generate_golden_partial_lib",
@@ -7,38 +7,13 @@ ts_library(
         "cli.ts",
         "generate_golden_partial.ts",
     ],
+    visibility = ["//packages/compiler-cli/test/compliance:__subpackages__"],
     deps = [
         "//packages/compiler-cli/src/ngtsc/file_system",
         "//packages/compiler-cli/test/compliance/test_helpers",
     ],
 )
 
-nodejs_binary(
-    name = "generate_golden_partial_1",
-    testonly = True,
-    data = [
-        ":generate_golden_partial_lib",
-        "//packages/compiler-cli/test/compliance/test_cases",
-        "//packages/compiler-cli/test/ngtsc/fake_core:npm_package",
-    ],
-    entry_point = "cli.ts",
-    templated_args = [
-        # "--node_options=--inspect-brk",
-        "directives/matching/tests.json",
-    ],
-)
-
-nodejs_binary(
-    name = "generate_golden_partial_2",
-    testonly = True,
-    data = [
-        ":generate_golden_partial_lib",
-        "//packages/compiler-cli/test/compliance/test_cases",
-        "//packages/compiler-cli/test/ngtsc/fake_core:npm_package",
-    ],
-    entry_point = "cli.ts",
-    templated_args = [
-        # "--node_options=--inspect-brk",
-        "interpolations/tests.json",
-    ],
-)
+exports_files([
+    "cli.ts",
+])
