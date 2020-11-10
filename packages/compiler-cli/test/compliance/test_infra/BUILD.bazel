@@ -1,0 +1,43 @@
+load("//tools:defaults.bzl", "ts_library")
+
+ts_library(
+    name = "_full_compile_test_lib",
+    testonly = True,
+    srcs = ["full_compile_spec.ts"],
+    visibility = ["//packages/compiler-cli/test/compliance:__pkg__"],
+    deps = [
+        "//packages/compiler-cli/src/ngtsc/file_system",
+        "//packages/compiler-cli/test/compliance/test_helpers",
+    ],
+)
+
+ts_library(
+    name = "_linked_compile_test_lib",
+    testonly = True,
+    srcs = ["linked_compile_spec.ts"],
+    visibility = ["//packages/compiler-cli/test/compliance:__pkg__"],
+    deps = [
+        "//packages/compiler-cli/linker/babel",
+        "//packages/compiler-cli/src/ngtsc/file_system",
+        "//packages/compiler-cli/test/compliance/test_helpers",
+        "@npm//@types/babel__core",
+    ],
+)
+
+ts_library(
+        name = "_generate_golden_partial_lib",
+        testonly = True,
+        srcs = [
+            "cli.ts",
+            "generate_golden_partial.ts",
+        ],
+        visibility = ["//packages/compiler-cli/test/compliance:__pkg__"],
+        deps = [
+            "//packages/compiler-cli/src/ngtsc/file_system",
+            "//packages/compiler-cli/test/compliance/test_helpers",
+        ],
+    )
+
+exports_files([
+    "cli.ts",
+])

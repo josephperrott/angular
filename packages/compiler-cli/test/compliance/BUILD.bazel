@@ -1,0 +1,4 @@
+
+load("//packages/compiler-cli/test/compliance/test_infra:compliance_tests.bzl", "generate_compliance_test_targets")
+
+generate_compliance_test_targets(paths = glob(include = ["**/tests.json"]))
