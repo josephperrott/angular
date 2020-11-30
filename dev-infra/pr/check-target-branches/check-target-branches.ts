@@ -33,8 +33,6 @@ export async function getTargetBranchesForPr(prNumber: number) {
   /** The active label which is being used for targetting the PR. */
   const targetLabel = getTargetLabelFromPullRequest(mergeConfig!, labels);
   if (targetLabel === null) {
-    error(red(`No target label was found on pr #${prNumber}`));
-    process.exitCode = 1;
     return;
   }
   /** The target branches based on the target label and branch targetted in the Github UI. */
@@ -45,6 +43,8 @@ export async function getTargetBranchesForPr(prNumber: number) {
 export async function printTargetBranchesForPr(prNumber: number) {
   const targets = await getTargetBranchesForPr(prNumber);
   if (targets === undefined) {
+    error(red(`No target label was found on pr #${prNumber}`));
+    process.exitCode = 1;
     return;
   }
   info.group(`PR #${prNumber} will merge into:`);

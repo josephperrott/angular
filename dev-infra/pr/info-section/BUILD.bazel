@@ -1,0 +1,13 @@
+load("@npm//@bazel/typescript:index.bzl", "ts_library")
+
+ts_library(
+    name = "info-section",
+    srcs = glob(["*.ts"]),
+    module_name = "@angular/dev-infra-private/pr/info-section",
+    visibility = ["//dev-infra:__subpackages__"],
+    deps = [
+        "//dev-infra/pr/check-target-branches",
+        "//dev-infra/utils",
+        "@npm//@types/yargs",
+    ],
+)
