@@ -53,22 +53,13 @@ describe('validate-commit-message.js', () => {
       expectValidationResult(validateCommitMessage('Revert: "fix(packaging): something"'), VALID);
     });
 
-    it('should validate max length', () => {
+    it('should validate max length of the header line', () => {
       const msg =
           'fix(compiler): something super mega extra giga tera long, maybe even longer and longer and longer and longer and longer and longer...';
 
       expectValidationResult(validateCommitMessage(msg), INVALID, [
         `The commit message header is longer than ${config.commitMessage.maxLineLength} characters`
       ]);
-    });
-
-    it('should skip max length limit for URLs', () => {
-      const msg = 'fix(compiler): this is just an usual commit message tile\n\n' +
-          'This is a normal commit message body which does not exceed the max length\n' +
-          'limit. For more details see the following super long URL:\n\n' +
-          'https://github.com/angular/components/commit/e2ace018ddfad10608e0e32932c43dcfef4095d7#diff-9879d6db96fd29134fc802214163b95a';
-
-      expectValidationResult(validateCommitMessage(msg), VALID);
     });
 
     it('should validate "<type>(<scope>): <subject>" format', () => {

@@ -1811,8 +1811,6 @@ function parseCommitMessagesForRange(range) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-/** Regex matching a URL for an entire commit body line. */
-const COMMIT_BODY_URL_LINE_RE = /^https?:\/\/.*$/;
 /** Validate a commit message against using the local repo's config. */
 function validateCommitMessage(commitMsg, options = {}) {
     const config = getCommitMessageConfig().commitMessage;
@@ -1890,16 +1888,6 @@ function validateCommitMessage(commitMsg, options = {}) {
         if (!((_a = config.minBodyLengthTypeExcludes) === null || _a === void 0 ? void 0 : _a.includes(commit.type)) &&
             commit.bodyWithoutLinking.trim().length < config.minBodyLength) {
             errors.push(`The commit message body does not meet the minimum length of ${config.minBodyLength} characters`);
-            return false;
-        }
-        const bodyByLine = commit.body.split('\n');
-        const lineExceedsMaxLength = bodyByLine.some(line => {
-            // Check if any line exceeds the max line length limit. The limit is ignored for
-            // lines that just contain an URL (as these usually cannot be wrapped or shortened).
-            return line.length > config.maxLineLength && !COMMIT_BODY_URL_LINE_RE.test(line);
-        });
-        if (lineExceedsMaxLength) {
-            errors.push(`The commit message body contains lines greater than ${config.maxLineLength} characters`);
             return false;
         }
         return true;

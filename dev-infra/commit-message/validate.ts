@@ -23,9 +23,6 @@ export interface ValidateCommitMessageResult {
   commit: ParsedCommitMessage;
 }
 
-/** Regex matching a URL for an entire commit body line. */
-const COMMIT_BODY_URL_LINE_RE = /^https?:\/\/.*$/;
-
 /** Validate a commit message against using the local repo's config. */
 export function validateCommitMessage(
     commitMsg: string|ParsedCommitMessage,
@@ -126,19 +123,6 @@ export function validateCommitMessage(
         commit.bodyWithoutLinking.trim().length < config.minBodyLength) {
       errors.push(`The commit message body does not meet the minimum length of ${
           config.minBodyLength} characters`);
-      return false;
-    }
-
-    const bodyByLine = commit.body.split('\n');
-    const lineExceedsMaxLength = bodyByLine.some(line => {
-      // Check if any line exceeds the max line length limit. The limit is ignored for
-      // lines that just contain an URL (as these usually cannot be wrapped or shortened).
-      return line.length > config.maxLineLength && !COMMIT_BODY_URL_LINE_RE.test(line);
-    });
-
-    if (lineExceedsMaxLength) {
-      errors.push(
-          `The commit message body contains lines greater than ${config.maxLineLength} characters`);
       return false;
     }
 
