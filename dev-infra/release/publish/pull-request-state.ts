@@ -8,20 +8,24 @@
 
 import * as Octokit from '@octokit/rest';
 import {GitClient} from '../../utils/git/index';
+import { pullRequestStateQuery } from './graphql-queries';
 
 /** State of a pull request in Github. */
-export type PullRequestState = 'merged'|'closed'|'open';
+export type PullRequestState = 'merged'|'closed'|'pending'|'merge ready';
 
 /** Gets whether a given pull request has been merged. */
 export async function getPullRequestState(api: GitClient, id: number): Promise<PullRequestState> {
-  const {data} = await api.github.pulls.get({...api.remoteParams, pull_number: id});
-  if (data.merged) {
+  const {repository: {pullRequest}} = await api.github.graphql.query(pullRequestStateQuery)
+  const status = pullRequest.commits.nodes[0].commit.status.state;
+
+  if (pullRequest.state === 'MERGED') {
     return 'merged';
-  } else if (data.closed_at !== null) {
+  } else if (pullRequest.state === 'CLOSED') {
     return await isPullRequestClosedWithAssociatedCommit(api, id) ? 'merged' : 'closed';
-  } else {
-    return 'open';
+  } else if (['SUCESSS', 'EXPECTED'].includes(status)) {
+    return 'merge ready';
   }
+  return 'pending';
 }
 
 /**

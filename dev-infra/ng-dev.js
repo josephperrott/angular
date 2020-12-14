@@ -5319,6 +5319,26 @@ const findOwnedForksOfRepoQuery = typedGraphqlify.params({
         }),
     }),
 });
+const pullRequestStateQuery = typedGraphqlify.params({
+    $owner: 'String!',
+    $name: 'String!',
+    $number: 'Number!',
+}, {
+    repository: typedGraphqlify.params({ owner: '$owner', name: '$name' }, {
+        pullRequest: typedGraphqlify.params({ number: '$number' }, {
+            state: typedGraphqlify.types.oneOf(['OPEN', 'CLOSED', 'MERGED']),
+            commits: typedGraphqlify.params({ last: 1 }, {
+                nodes: [{
+                        commit: {
+                            status: {
+                                state: typedGraphqlify.types.oneOf(['EXPECTED', 'ERROR', 'FAILURE', 'PENDING', 'SUCCESS'])
+                            }
+                        }
+                    }]
+            }),
+        }),
+    })
+});
 
 /**
  * @license
@@ -5330,16 +5350,18 @@ const findOwnedForksOfRepoQuery = typedGraphqlify.params({
 /** Gets whether a given pull request has been merged. */
 function getPullRequestState(api, id) {
     return tslib.__awaiter(this, void 0, void 0, function* () {
-        const { data } = yield api.github.pulls.get(Object.assign(Object.assign({}, api.remoteParams), { pull_number: id }));
-        if (data.merged) {
+        const { repository: { pullRequest } } = yield api.github.graphql.query(pullRequestStateQuery);
+        const status = pullRequest.commits.nodes[0].commit.status.state;
+        if (pullRequest.state === 'MERGED') {
             return 'merged';
         }
-        else if (data.closed_at !== null) {
+        else if (pullRequest.state === 'CLOSED') {
             return (yield isPullRequestClosedWithAssociatedCommit(api, id)) ? 'merged' : 'closed';
         }
-        else {
-            return 'open';
+        else if (['SUCESSS', 'EXPECTED'].includes(status)) {
+            return 'merge ready';
         }
+        return 'pending';
     });
 }
 /**
@@ -5645,7 +5667,7 @@ class ReleaseAction {
     waitForPullRequestToBeMerged(id, interval = waitForPullRequestInterval) {
         return tslib.__awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
-                debug(`Waiting for pull request #${id} to be merged.`);
+                debug(`Waiting for pull request #${id} to be approved.`);
                 const spinner = ora.call(undefined).start(`Waiting for pull request #${id} to be merged.`);
                 const intervalId = setInterval(() => tslib.__awaiter(this, void 0, void 0, function* () {
                     const prState = yield getPullRequestState(this.git, id);
@@ -5660,6 +5682,12 @@ class ReleaseAction {
                         warn(yellow(`  ✘   Pull request #${id} has been closed.`));
                         clearInterval(intervalId);
                         reject(new UserAbortedReleaseActionError());
+                    }
+                    else if (prState === 'merge ready') {
+                        spinner.stop();
+                        warn(green(`  ✘   Pull request #${id} is merge ready, beginning merge.`));
+                        clearInterval(intervalId);
+                        yield mergePullRequest(id, this.git.githubToken).then(resolve);
                     }
                 }), interval);
             });

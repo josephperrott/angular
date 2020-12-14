@@ -10,6 +10,7 @@ import {promises as fs} from 'fs';
 import * as ora from 'ora';
 import {join} from 'path';
 import * as semver from 'semver';
+import { mergePullRequest } from '../../pr/merge/index';
 
 import {debug, error, green, info, promptConfirm, red, warn, yellow} from '../../utils/console';
 import {getListCommitsInBranchUrl, getRepositoryGitUrl} from '../../utils/git/github-urls';
@@ -297,9 +298,9 @@ export abstract class ReleaseAction {
    * merge, the script will abort gracefully (considering a manual user abort).
    */
   protected async waitForPullRequestToBeMerged(id: number, interval = waitForPullRequestInterval):
-      Promise<void> {
+  Promise<void> {
     return new Promise((resolve, reject) => {
-      debug(`Waiting for pull request #${id} to be merged.`);
+      debug(`Waiting for pull request #${id} to be approved.`);
 
       const spinner = ora.call(undefined).start(`Waiting for pull request #${id} to be merged.`);
       const intervalId = setInterval(async () => {
@@ -314,6 +315,11 @@ export abstract class ReleaseAction {
           warn(yellow(`  ✘   Pull request #${id} has been closed.`));
           clearInterval(intervalId);
           reject(new UserAbortedReleaseActionError());
+        } else if (prState === 'merge ready') {
+          spinner.stop();
+          warn(green(`  ✘   Pull request #${id} is merge ready, beginning merge.`));
+          clearInterval(intervalId);
+          await mergePullRequest(id, this.git.githubToken!).then(resolve);
         }
       }, interval);
     });

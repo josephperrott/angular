@@ -29,3 +29,28 @@ export const findOwnedForksOfRepoQuery = params(
         }),
       }),
     });
+
+
+export const pullRequestStateQuery = params(
+  {
+    $owner: 'String!',
+    $name: 'String!',
+    $number: 'Number!',
+  },
+  {
+    repository: params({owner: '$owner', name: '$name'}, {
+      pullRequest: params({number: '$number'}, {
+        state: types.oneOf(['OPEN', 'CLOSED', 'MERGED']),
+        commits: params({last: 1}, {
+          nodes: [{
+            commit: {
+              status: {
+                state: types.oneOf(['EXPECTED', 'ERROR', 'FAILURE', 'PENDING', 'SUCCESS'])
+              }
+            }
+          }]
+        }),
+      }),
+    })
+  }
+);
