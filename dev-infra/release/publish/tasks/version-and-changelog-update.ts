@@ -51,29 +51,33 @@ export class ReleaseVersionAndNotesUpdateTask extends Task<Artifacts, [semver.Se
 
 
   protected async createPr(branch: string, stagingBranch: string, newVersion: semver.SemVer) {
-    const {owner, repo} = this.git.remoteParams;
-    const repoSlug = `${owner}/${repo}`;
-    const {data} = await this.git.github.pulls.create({
-      ...this.git.remoteParams,
-      head: `${owner}:${stagingBranch}}`,
-      base: branch,
-      title: `Bump version to "v${newVersion}" with changelog.`,
-    });
-
-    // Add labels to the newly created PR if provided in the configuration.
-    if (this.config.releasePrLabels !== undefined) {
-      await this.git.github.issues.addLabels({
+    try {
+      const {owner, repo} = this.git.remoteParams;
+      const repoSlug = `${owner}/${repo}`;
+      const {data} = await this.git.github.pulls.create({
         ...this.git.remoteParams,
-        issue_number: data.number,
-        labels: this.config.releasePrLabels,
+        head: `${owner}:${stagingBranch}}`,
+        base: branch,
+        title: `Bump version to "v${newVersion}" with changelog.`,
       });
-    }
 
-    info(green(`  ✓   Created pull request #${data.number} in ${repoSlug}.`));
-    return {
-      prNumber: data.number,
-      url: data.html_url,
-    };
+      // Add labels to the newly created PR if provided in the configuration.
+      if (this.config.releasePrLabels !== undefined) {
+        await this.git.github.issues.addLabels({
+          ...this.git.remoteParams,
+          issue_number: data.number,
+          labels: this.config.releasePrLabels,
+        });
+      }
+
+      info(green(`  ✓   Created pull request #${data.number} in ${repoSlug}.`));
+      return {
+        prNumber: data.number,
+        url: data.html_url,
+      };
+    } catch (err) {
+      console.error(err);
+    }
   }
 
 
