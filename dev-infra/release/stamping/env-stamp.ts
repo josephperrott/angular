@@ -10,6 +10,7 @@ import {join} from 'path';
 import {GitClient} from '../../utils/git/index';
 
 import {exec as _exec} from '../../utils/shelljs';
+import {getReleaseConfig} from '../config/index';
 
 export type EnvStampMode = 'snapshot'|'release';
 
@@ -24,12 +25,17 @@ export type EnvStampMode = 'snapshot'|'release';
  * in Windows or OSX hosts (https://github.com/docker/for-win/issues/188).
  */
 export function buildEnvStamp(mode: EnvStampMode) {
+  const {nodeEngineRange} = getReleaseConfig();
   console.info(`BUILD_SCM_BRANCH ${getCurrentBranch()}`);
   console.info(`BUILD_SCM_COMMIT_SHA ${getCurrentSha()}`);
   console.info(`BUILD_SCM_HASH ${getCurrentSha()}`);
   console.info(`BUILD_SCM_LOCAL_CHANGES ${hasLocalChanges()}`);
   console.info(`BUILD_SCM_USER ${getCurrentGitUser()}`);
   console.info(`BUILD_SCM_VERSION ${getSCMVersion(mode)}`);
+
+  if (nodeEngineRange) {
+    console.info(`NODE_ENGINE_RANGE ${nodeEngineRange()}`);
+  }
   process.exit(0);
 }
 

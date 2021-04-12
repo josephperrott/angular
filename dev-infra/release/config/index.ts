@@ -40,6 +40,8 @@ export interface ReleaseConfig {
   // TODO(josephperrott): Make releaseNotes a required attribute on the interface when tooling is
   // integrated.
   releaseNotes?: ReleaseNotesConfig;
+  /** Generate the node engine range for stamping the `package.json` files. */
+  nodeEngineRange?: () => string;
 }
 
 /** Configuration for creating release notes during publishing. */

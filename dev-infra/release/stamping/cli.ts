@@ -19,7 +19,7 @@ function builder(args: Argv): Argv<Options> {
   return args.option('mode', {
     demandOption: true,
     description: 'Whether the env-stamp should be built for a snapshot or release',
-    choices: ['snapshot' as const, 'release' as const]
+    choices: ['snapshot', 'release'] as const,
   });
 }
 

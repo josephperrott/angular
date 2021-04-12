@@ -6889,12 +6889,16 @@ const ReleaseSetDistTagCommand = {
  * in Windows or OSX hosts (https://github.com/docker/for-win/issues/188).
  */
 function buildEnvStamp(mode) {
+    const { nodeEngineRange } = getReleaseConfig();
     console.info(`BUILD_SCM_BRANCH ${getCurrentBranch()}`);
     console.info(`BUILD_SCM_COMMIT_SHA ${getCurrentSha()}`);
     console.info(`BUILD_SCM_HASH ${getCurrentSha()}`);
     console.info(`BUILD_SCM_LOCAL_CHANGES ${hasLocalChanges()}`);
     console.info(`BUILD_SCM_USER ${getCurrentGitUser()}`);
     console.info(`BUILD_SCM_VERSION ${getSCMVersion(mode)}`);
+    if (nodeEngineRange) {
+        console.info(`NODE_ENGINE_RANGE ${nodeEngineRange()}`);
+    }
     process.exit(0);
 }
 /** Run the exec command and return the stdout as a trimmed string. */
@@ -6950,7 +6954,7 @@ function builder$a(args) {
     return args.option('mode', {
         demandOption: true,
         description: 'Whether the env-stamp should be built for a snapshot or release',
-        choices: ['snapshot', 'release']
+        choices: ['snapshot', 'release'],
     });
 }
 function handler$a({ mode }) {
