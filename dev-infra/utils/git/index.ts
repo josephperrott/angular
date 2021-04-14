@@ -340,3 +340,7 @@ export class GitClient {
 function gitOutputAsArray(gitCommandResult: SpawnSyncReturns<string>): string[] {
   return gitCommandResult.stdout.split('\n').map(x => x.trim()).filter(x => !!x);
 }
+
+
+
+const x = 'some content';
