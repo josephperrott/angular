@@ -343,4 +343,4 @@ function gitOutputAsArray(gitCommandResult: SpawnSyncReturns<string>): string[] 
 
 
 
-const x = 'some content';
+const x = 'some content else';
