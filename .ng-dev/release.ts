@@ -1,6 +1,8 @@
 import {join} from 'path';
 import {exec} from 'shelljs';
-import {ReleaseConfig} from '../dev-infra/release/config';
+import {ReleaseConfig} from '../dev-infra/release/config/index';
+import {getNodeEnginesValueFromPackageJsonFile} from '../dev-infra/release/config/utils';
+
 
 /** Configuration for the `ng-dev release` command. */
 export const release: ReleaseConfig = {
@@ -34,4 +36,5 @@ export const release: ReleaseConfig = {
     exec('yarn -s gulp changelog', {cwd: join(__dirname, '../')});
   },
   releasePrLabels: ['comp: build & ci', 'action: merge', 'PullApprove: disable'],
+  nodeEngineRange: getNodeEnginesValueFromPackageJsonFile('./packages/core/package.json'),
 };

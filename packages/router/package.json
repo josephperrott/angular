@@ -14,7 +14,7 @@
   "author": "angular",
   "license": "MIT",
   "engines": {
-    "node": ">=12.14.1 <16.0.0"
+    "node": "NODE_ENGINE_RANGE"
   },
   "bugs": {
     "url": "https://github.com/angular/angular/issues"

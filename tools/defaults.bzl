@@ -47,10 +47,11 @@ ANGULAR_SCOPED_PACKAGES = ["@angular/%s" % p for p in [
     "service-worker",
 ]]
 
-PKG_GROUP_REPLACEMENTS = {
+DEFAULT_NPM_PKG_SUBSITUTIONS = {
     "\"NG_UPDATE_PACKAGE_GROUP\"": """[
       %s
     ]""" % ",\n      ".join(["\"%s\"" % s for s in ANGULAR_SCOPED_PACKAGES]),
+    "NODE_ENGINE_RANGE": "{NODE_ENGINE_RANGE}",
 }
 
 def _default_module_name(testonly):
@@ -170,7 +171,7 @@ def ng_package(name, readme_md = None, license_banner = None, deps = [], **kwarg
     ]
     visibility = kwargs.pop("visibility", None)
 
-    common_substitutions = dict(kwargs.pop("substitutions", {}), **PKG_GROUP_REPLACEMENTS)
+    common_substitutions = dict(kwargs.pop("substitutions", {}), **DEFAULT_NPM_PKG_SUBSITUTIONS)
     substitutions = dict(common_substitutions, **{
         "0.0.0-PLACEHOLDER": "0.0.0",
     })
@@ -208,7 +209,7 @@ def pkg_npm(name, **kwargs):
     """Default values for pkg_npm"""
     visibility = kwargs.pop("visibility", None)
 
-    common_substitutions = dict(kwargs.pop("substitutions", {}), **PKG_GROUP_REPLACEMENTS)
+    common_substitutions = dict(kwargs.pop("substitutions", {}), **DEFAULT_NPM_PKG_SUBSITUTIONS)
     substitutions = dict(common_substitutions, **{
         "0.0.0-PLACEHOLDER": "0.0.0",
     })
