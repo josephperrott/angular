@@ -1,0 +1,64 @@
+---
+name: Bug Report
+description: Report a bug in the Angular Framework
+body:
+- type: dropdown
+  id: affected_packages
+  attributes:
+    label: Affected Package(s)
+    description: Which @angular/* package is the source of this bug
+    multiple: true
+    options:
+    - core
+    - common
+    - compiler
+    - other
+  validations:
+    required: true
+- type: dropdown
+  id: is_regression
+  attributes:
+    label: Is this a regression?
+    options:
+      - 'Yes'
+      - 'No'
+  validations:
+    required: true
+- type: textarea
+  id: description
+  attributes:
+    label: Description
+    placeholder: A clear and concise description of the problem...
+  validations:
+    required: true
+- type: input
+  id: reproduction
+  attributes:
+    label: Minimal Reproduction
+    placeholder: https://stackblitz.com/...
+    description: |
+      Please create and share minimal reproduction of the issue starting with this template: https://stackblitz.com/fork/angular-ivy If StackBlitz is not suitable for reproduction of your issue, please create a minimal GitHub repository with the reproduction of the issue. A good way to make a minimal reproduction is to create a new app via `ng new repro-app` and add the minimum possible code to show the problem. Share the link to the repo below along with step-by-step instructions to reproduce the problem, as well as expected and actual behavior.
+  validations:
+    required: true
+- type: textarea
+  id: error
+  attributes:
+    label: Exception or Error
+    placeholder: The error, exception or stack trace you are encountering
+    render: auto
+  validations:
+    required: false
+- type: textarea
+  id: environment
+  attributes:
+    label: Your environment
+    placeholder: run `ng version`
+    render: auto
+  validations:
+    required: true
+- type: textarea
+  id: misc
+  attributes:
+    label: Anything else releveant?
+  validations:
+    required: false
