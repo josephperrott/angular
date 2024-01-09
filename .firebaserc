@@ -1,0 +1,13 @@
+{
+  "projects": {},
+  "targets": {
+    "angular-dev-site": {
+      "hosting": {
+        "angular-docs": [
+          "angular-dev-site"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
