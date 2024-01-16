@@ -1,0 +1,35 @@
+load("@npm//@angular/docs:index.bzl", "generate_guides")
+
+generate_guides(
+    name = "animations",
+    srcs = glob([
+        "*.md",
+    ]),
+    data = [
+        "//adev/content/examples/animations:src/app/animations.1.ts",
+        "//adev/content/examples/animations:src/app/animations.ts",
+        "//adev/content/examples/animations:src/app/app.component.html",
+        "//adev/content/examples/animations:src/app/app.component.ts",
+        "//adev/content/examples/animations:src/app/app.module.1.ts",
+        "//adev/content/examples/animations:src/app/app.routes.ts",
+        "//adev/content/examples/animations:src/app/hero-list-auto.component.ts",
+        "//adev/content/examples/animations:src/app/hero-list-enter-leave.component.ts",
+        "//adev/content/examples/animations:src/app/hero-list-groups.component.ts",
+        "//adev/content/examples/animations:src/app/hero-list-page.component.html",
+        "//adev/content/examples/animations:src/app/hero-list-page.component.ts",
+        "//adev/content/examples/animations:src/app/insert-remove.component.html",
+        "//adev/content/examples/animations:src/app/insert-remove.component.ts",
+        "//adev/content/examples/animations:src/app/open-close.component.1.html",
+        "//adev/content/examples/animations:src/app/open-close.component.1.ts",
+        "//adev/content/examples/animations:src/app/open-close.component.2.html",
+        "//adev/content/examples/animations:src/app/open-close.component.2.ts",
+        "//adev/content/examples/animations:src/app/open-close.component.3.html",
+        "//adev/content/examples/animations:src/app/open-close.component.3.ts",
+        "//adev/content/examples/animations:src/app/open-close.component.4.html",
+        "//adev/content/examples/animations:src/app/open-close.component.4.ts",
+        "//adev/content/examples/animations:src/app/open-close.component.css",
+        "//adev/content/examples/animations:src/app/open-close.component.ts",
+        "//adev/content/examples/animations:src/app/status-slider.component.ts",
+    ],
+    visibility = ["//adev:__subpackages__"],
+)

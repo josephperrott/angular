@@ -1,0 +1,23 @@
+load("@npm//@angular/docs:index.bzl", "generate_guides")
+
+generate_guides(
+    name = "i18n",
+    srcs = glob([
+        "*.md",
+    ]),
+    data = [
+        "//adev/content/examples/i18n:angular.json",
+        "//adev/content/examples/i18n:doc-files/apache2.conf",
+        "//adev/content/examples/i18n:doc-files/app.component.html",
+        "//adev/content/examples/i18n:doc-files/commands.sh",
+        "//adev/content/examples/i18n:doc-files/locale_plural_function.ts",
+        "//adev/content/examples/i18n:doc-files/main.1.ts",
+        "//adev/content/examples/i18n:doc-files/messages.fr.xlf.html",
+        "//adev/content/examples/i18n:doc-files/nginx.conf",
+        "//adev/content/examples/i18n:doc-files/rendered-output.html",
+        "//adev/content/examples/i18n:src/app/app.component.html",
+        "//adev/content/examples/i18n:src/app/app.component.ts",
+        "//adev/content/examples/i18n:src/main.ts",
+    ],
+    visibility = ["//adev:__subpackages__"],
+)

@@ -1,0 +1,22 @@
+load("@npm//@angular/docs:index.bzl", "generate_guides")
+
+generate_guides(
+    name = "cli",
+    srcs = glob([
+        "*.md",
+    ]),
+    data = [
+        "//adev/content/examples/cli-builder:src/my-builder.spec.ts",
+        "//adev/content/examples/cli-builder:src/my-builder.ts",
+        "//adev/content/examples/schematics-for-libraries:projects/my-lib/package.json",
+        "//adev/content/examples/schematics-for-libraries:projects/my-lib/schematics/collection.1.json",
+        "//adev/content/examples/schematics-for-libraries:projects/my-lib/schematics/collection.json",
+        "//adev/content/examples/schematics-for-libraries:projects/my-lib/schematics/my-service/index.1.ts",
+        "//adev/content/examples/schematics-for-libraries:projects/my-lib/schematics/my-service/index.ts",
+        "//adev/content/examples/schematics-for-libraries:projects/my-lib/schematics/my-service/schema.json",
+        "//adev/content/examples/schematics-for-libraries:projects/my-lib/schematics/my-service/schema.ts",
+        "//adev/content/examples/schematics-for-libraries:projects/my-lib/schematics/ng-add/index.ts",
+        "//adev/content/examples/schematics-for-libraries:projects/my-lib/tsconfig.schematics.json",
+    ],
+    visibility = ["//adev:__subpackages__"],
+)

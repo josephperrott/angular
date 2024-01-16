@@ -1,0 +1,31 @@
+load("@npm//@angular/docs:index.bzl", "generate_guides")
+
+generate_guides(
+    name = "templates",
+    srcs = glob([
+        "*.md",
+    ]),
+    data = [
+        "//adev/content/examples/attribute-binding:src/app/app.component.html",
+        "//adev/content/examples/attribute-binding:src/app/single-and-multiple-style-binding.component.ts",
+        "//adev/content/examples/event-binding:src/app/app.component.html",
+        "//adev/content/examples/interpolation:src/app/app.component.1.ts",
+        "//adev/content/examples/interpolation:src/app/app.component.html",
+        "//adev/content/examples/interpolation:src/app/app.component.ts",
+        "//adev/content/examples/property-binding:src/app/app.component.html",
+        "//adev/content/examples/property-binding:src/app/app.component.ts",
+        "//adev/content/examples/property-binding:src/app/item.ts",
+        "//adev/content/examples/property-binding:src/app/item-detail.component.ts",
+        "//adev/content/examples/property-binding:src/app/item-list.component.ts",
+        "//adev/content/examples/template-reference-variables:src/app/app.component.html",
+        "//adev/content/examples/template-syntax:src/app/app.component.html",
+        "//adev/content/examples/template-syntax:src/app/svg.component.svg",
+        "//adev/content/examples/template-syntax:src/app/svg.component.ts",
+        "//adev/content/examples/two-way-binding:src/app/app.component.html",
+        "//adev/content/examples/two-way-binding:src/app/app.component.ts",
+        "//adev/content/examples/two-way-binding:src/app/sizer/sizer.component.html",
+        "//adev/content/examples/two-way-binding:src/app/sizer/sizer.component.ts",
+        "//adev/src/assets/images:templates.svg",
+    ],
+    visibility = ["//adev:__subpackages__"],
+)
