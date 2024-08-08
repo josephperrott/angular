@@ -347,7 +347,6 @@
 
 "@angular/build-tooling@https://github.com/angular/dev-infra-private-build-tooling-builds.git#f924f27af2bb902b05fcd47028a4c13f8d03ab33":
   version "0.0.0-d30a56c19bafaac67cf44e605ed8c2c0e45b0a51"
-  uid f924f27af2bb902b05fcd47028a4c13f8d03ab33
   resolved "https://github.com/angular/dev-infra-private-build-tooling-builds.git#f924f27af2bb902b05fcd47028a4c13f8d03ab33"
   dependencies:
     "@angular/benchpress" "0.3.0"
@@ -557,7 +556,6 @@
 
 "@angular/ng-dev@https://github.com/angular/dev-infra-private-ng-dev-builds.git#806cbfc987d0df61f2ed90a24e2d4176e8a50a5b":
   version "0.0.0-03b8a7dffd1205e061f0bee949024ebefc2a6592"
-  uid "806cbfc987d0df61f2ed90a24e2d4176e8a50a5b"
   resolved "https://github.com/angular/dev-infra-private-ng-dev-builds.git#806cbfc987d0df61f2ed90a24e2d4176e8a50a5b"
   dependencies:
     "@octokit/rest" "20.1.1"
@@ -569,6 +567,13 @@
     supports-color "9.4.0"
     typed-graphqlify "^3.1.1"
     typescript "~4.9.0"
+
+"@angular/platform-browser@^18.1.0-next":
+  version "18.1.4"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-18.1.4.tgz#494e84aeda1425dd19da1a3295cecad5211a66c0"
+  integrity sha512-zGx33St0JVYT8EZOaf0s8Twr0RgfU2cqEAc9Wwx9HVJ0pF5y4VnftK3pewwiHWDHkPfiJy0jBKbtrkVUSbgZfg==
+  dependencies:
+    tslib "^2.3.0"
 
 "@apidevtools/json-schema-ref-parser@^9.0.3":
   version "9.1.2"
@@ -8392,8 +8397,7 @@ domhandler@^5.0.2, domhandler@^5.0.3:
     domelementtype "^2.3.0"
 
 "domino@https://github.com/angular/domino.git#8f228f8862540c6ccd14f76b5a1d9bb5458618af":
-  version "2.1.6+git"
-  uid "8f228f8862540c6ccd14f76b5a1d9bb5458618af"
+  version "2.1.6"
   resolved "https://github.com/angular/domino.git#8f228f8862540c6ccd14f76b5a1d9bb5458618af"
 
 dompurify@^3.0.5:
