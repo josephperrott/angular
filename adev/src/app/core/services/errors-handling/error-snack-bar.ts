@@ -38,7 +38,7 @@ export class ErrorSnackBar {
   protected actionText?: string;
 
   constructor(protected snackBarRef: MatSnackBarRef<ErrorSnackBar>) {
-    const data = inject(MAT_SNACK_BAR_DATA) as ErrorSnackBarData;
+    const data = inject(MAT_SNACK_BAR_DATA as any) as ErrorSnackBarData;
     this.message = data.message;
     this.actionText = data.actionText;
   }

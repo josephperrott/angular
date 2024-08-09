@@ -60,7 +60,7 @@ describe('ApiReferenceDetailsPage', () => {
     harness = await RouterTestingHarness.create();
     const {fixture} = harness;
     component = await harness.navigateByUrl('/', ApiReferenceDetailsPage);
-    loader = TestbedHarnessEnvironment.loader(fixture);
+    loader = TestbedHarnessEnvironment.loader(fixture as unknown as Parameters<typeof TestbedHarnessEnvironment['loader']>[0]);
     fixture.detectChanges();
   });
 

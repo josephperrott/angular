@@ -55,7 +55,7 @@ describe('CliReferenceDetailsPage', () => {
     harness = await RouterTestingHarness.create();
     const {fixture} = harness;
     component = await harness.navigateByUrl('/', CliReferenceDetailsPage);
-    TestbedHarnessEnvironment.loader(fixture);
+    TestbedHarnessEnvironment.loader(fixture as unknown as Parameters<typeof TestbedHarnessEnvironment['loader']>[0])
     fixture.detectChanges();
   });
 

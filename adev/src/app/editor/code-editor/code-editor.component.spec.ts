@@ -80,7 +80,7 @@ describe('CodeEditor', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(CodeEditor);
-    loader = TestbedHarnessEnvironment.loader(fixture);
+    loader = TestbedHarnessEnvironment.loader(fixture as unknown as Parameters<typeof TestbedHarnessEnvironment['loader']>[0]);
 
     component = fixture.componentInstance;
     fixture.detectChanges();
