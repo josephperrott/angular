@@ -7,12 +7,12 @@
  */
 
 import {h, JSX} from 'preact';
-import {InitializerApiFunctionRenderable} from '../entities/renderables';
+import {InitializerApiFunctionRenderable} from '../entities/renderables.mjs';
 import {HeaderApi} from './header-api';
 import {SectionApi} from './section-api';
 import {SectionUsageNotes} from './section-usage-notes';
-import {API_REFERENCE_CONTAINER, REFERENCE_MEMBERS} from '../styling/css-classes';
-import {getFunctionMetadataRenderable} from '../transforms/function-transforms';
+import {API_REFERENCE_CONTAINER, REFERENCE_MEMBERS} from '../styling/css-classes.mjs';
+import {getFunctionMetadataRenderable} from '../transforms/function-transforms.mjs';
 import {signatureCard} from './function-reference';
 
 /** Component to render a constant API reference document. */

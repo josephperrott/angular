@@ -1,36 +1,38 @@
-load("//tools:defaults.bzl", "ts_library")
+load("//tools:defaults2.bzl", "ts_project")
 
 package(default_visibility = ["//visibility:public"])
 
-ts_library(
+ts_project(
     name = "lib",
     srcs = glob(
         [
-            "*.ts",
+            "*.mts",
         ],
         exclude = [
-            "index.ts",
+            "index.mts",
         ],
     ),
+    tsconfig = "//adev/shared-docs:tsconfig_build",
     deps = [
-        "//adev/shared-docs/interfaces",
-        "@npm//@types/node",
-        "@npm//@webcontainer/api",
-        "@npm//tinyglobby",
+        "//adev/shared-docs/interfaces:interfaces_rjs",
+        "//:node_modules/@types/node",
+        "//:node_modules/@webcontainer/api",
+        "//:node_modules/tinyglobby",
     ],
 )
 
-ts_library(
+ts_project(
     name = "navigation",
     srcs = [
-        "index.ts",
+        "index.mts",
     ],
     visibility = [
         "//adev/shared-docs:__subpackages__",
     ],
+    tsconfig = "//adev/shared-docs:tsconfig_build",
     deps = [
-        ":lib",
+        ":lib_rjs",
         "//adev/shared-docs/interfaces",
-        "@npm//@types/node",
+        "//:node_modules/@types/node",
     ],
 )

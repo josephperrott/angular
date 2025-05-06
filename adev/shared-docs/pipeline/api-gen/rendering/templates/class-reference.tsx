@@ -11,20 +11,20 @@ import {
   ClassEntryRenderable,
   DecoratorEntryRenderable,
   PipeEntryRenderable,
-} from '../entities/renderables';
+} from '../entities/renderables.mjs';
 import {ClassMemberList} from './class-member-list';
 import {HeaderApi} from './header-api';
 import {
   API_REFERENCE_CONTAINER,
   REFERENCE_MEMBERS,
   SECTION_CONTAINER,
-} from '../styling/css-classes';
+} from '../styling/css-classes.mjs';
 import {SectionDescription} from './section-description';
 import {SectionUsageNotes} from './section-usage-notes';
 import {SectionApi} from './section-api';
 import {SectionHeading} from './section-heading';
-import {PipeEntry} from '../entities';
-import {codeToHtml} from '../shiki/shiki';
+import {PipeEntry} from '../entities.mjs';
+import {codeToHtml} from '../shiki/shiki.mjs';
 import {RawHtml} from './raw-html';
 
 /** Component to render a class API reference document. */
