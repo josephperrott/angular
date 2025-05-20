@@ -1,8 +1,26 @@
-load("//tools:defaults.bzl", "extract_types", "pkg_npm", "ts_library")
+load("//tools:defaults.bzl", "extract_types", "pkg_npm")
+load("//tools:defaults2.bzl", "ts_project")
+load("//tools:defaults2.bzl", "ts_config")
 load("//packages/zone.js:bundles.bzl", "BUNDLES_ENTRY_POINTS")
 load("//packages/zone.js:tools.bzl", "generate_rollup_bundle")
 
 package(default_visibility = ["//visibility:public"])
+
+
+ts_config(
+    name = "tsconfig_build",
+    src = "tsconfig.json",
+)
+
+ts_config(
+    name = "tsconfig_test",
+    src = "tsconfig-test.json",
+    deps = [
+        ":tsconfig_build",
+        "//:node_modules/@types/jasmine",
+        "//:node_modules/@types/node",
+    ]
+)
 
 exports_files([
     "tsconfig.json",
@@ -23,11 +41,11 @@ genrule(
     cmd = "(echo '/**\n @license' && cat $< && echo '*/') > $@",
 )
 
-ts_library(
+ts_project(
     name = "zone_js",
     srcs = ["zone.ts"],
     visibility = ["//visibility:private"],
-    deps = ["//packages/zone.js/lib:zone_d_ts"],
+    deps = ["//packages/zone.js/lib:zone_d_ts_rjs"],
 )
 
 extract_types(
