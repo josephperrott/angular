@@ -191,6 +191,10 @@ jasmine_test(
         ":error_spec_srcs_rjs",
         ":node_error_lazy_policy_entry_point_rjs",
     ],
+    tags = [
+        # Remote execution changes the file paths in a way that causes our testing to fail.
+        "no-remote-exec",
+    ],
     fixed_args = [
         "--require={root}/packages/zone.js/test/node_error_entry_point.init.js",
     ],
@@ -209,7 +213,7 @@ ts_project(
 jasmine_test(
     name = "test_npm_package",
     data = [
-        ":npm_package_spec_lib",
+        ":npm_package_spec_lib_rjs",
         "//:node_modules/shelljs",
         "//packages/zone.js:npm_package",
     ],

@@ -1,5 +1,4 @@
-load("//tools:defaults.bzl", "jasmine_node_test")
-load("//tools:defaults2.bzl", "ts_project")
+load("//tools:defaults2.bzl", "ts_project", "jasmine_test")
 
 ts_project(
     name = "patched_init",
@@ -46,14 +45,25 @@ ts_project(
     ],
 )
 
-jasmine_node_test(
+jasmine_test(
     name = "test_patched",
-    bootstrap = [":patched_init"],
-    deps = [":test_patched_lib"],
+    data = [
+        ":patched_init_rjs",
+        ":test_patched_lib",
+    ],
+    
+    fixed_args = [
+        "--require={root}/packages/zone.js/test/zone-spec/clock-tests/patched.init.js",
+    ],
 )
 
-jasmine_node_test(
+jasmine_test(
     name = "test_unpatched",
-    bootstrap = [":unpatched_init"],
-    deps = [":test_unpatched_lib"],
+    data = [
+        ":unpatched_init_rjs",
+        ":test_unpatched_lib_rjs",
+    ],
+    fixed_args = [
+        "--require={root}/packages/zone.js/test/zone-spec/clock-tests/unpatched.init.js",
+    ],
 )
