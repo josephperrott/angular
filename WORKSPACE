@@ -110,6 +110,7 @@ npm_translate_lock(
         "//:.pnpmfile.cjs",
         "//:package.json",
         "//:pnpm-workspace.yaml",
+        "//adev/shared-docs:package.json",
         "//adev/shared-docs/pipeline/api-gen:package.json",
         "//integration:package.json",
         "//modules:package.json",

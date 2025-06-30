@@ -5,7 +5,7 @@ def _web_test(name, tags = [], deps = [], bootstrap = [], **kwargs):
     spec_bundle(
         name = "%s_bundle" % name,
         testonly = True,
-        srcs = ["//packages:tsconfig_build"],
+        tsconfig = kwargs.pop("tsconfig", "//packages:tsconfig_test"),
         bootstrap = bootstrap,
         deps = deps,
         tags = [
@@ -13,7 +13,6 @@ def _web_test(name, tags = [], deps = [], bootstrap = [], **kwargs):
         ],
         config = {
             "resolveExtensions": [".js", ".mjs"],
-            "tsconfig": "./packages/tsconfig-build.json",
         },
         platform = "browser",
         external = kwargs.pop("external", []),

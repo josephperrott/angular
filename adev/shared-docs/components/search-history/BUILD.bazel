@@ -23,7 +23,7 @@ ng_project(
         "//adev/shared-docs/components/search-dialog:__pkg__",
     ],
     deps = [
-        "//:node_modules/@angular/cdk",
+        "//adev/shared-docs:node_modules/@angular/cdk",
         "//adev/shared-docs/directives:directives_rjs",
         "//adev/shared-docs/pipes:pipes_rjs",
         "//adev/shared-docs/services:services_rjs",

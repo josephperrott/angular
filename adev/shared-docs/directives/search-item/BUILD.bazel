@@ -11,7 +11,7 @@ ng_project(
         "//adev/shared-docs/directives:__pkg__",
     ],
     deps = [
-        "//:node_modules/@angular/cdk",
+        "//adev/shared-docs:node_modules/@angular/cdk",
         "//adev/shared-docs/interfaces:interfaces_rjs",
         "//packages/core:core_rjs",
     ],

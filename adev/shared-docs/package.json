@@ -1,19 +1,17 @@
 {
   "name": "@angular/docs",
   "version": "0.0.0-PLACEHOLDER",
-  "peerDependencies": {
+  "dependencies": {
     "@angular/cdk": "^20.1.0-next",
-    "@angular/common": "^20.1.0-next",
-    "@angular/core": "^20.1.0-next",
-    "@angular/forms": "^20.1.0-next",
+    "@angular/common": "workspace:*",
+    "@angular/core": "workspace:*",
+    "@angular/forms": "workspace:*",
     "@angular/material": "^20.1.0-next",
-    "@angular/platform-browser": "^20.1.0-next",
-    "@angular/router": "^20.1.0-next",
+    "@angular/platform-browser": "workspace:*",
+    "@angular/router": "workspace:*",
     "@angular/ssr": "^20.1.0-next",
     "algoliasearch": "^5.0.0",
-    "rxjs": "^7.8.1"
-  },
-  "dependencies": {
+    "rxjs": "^7.8.1",
     "@webcontainer/api": "^1.1.8",
     "diff": "~8.0.0",
     "emoji-regex": "~10.4.0",
@@ -23,11 +21,31 @@
     "marked": "~16.0.0",
     "mermaid": "^11.0.0",
     "shiki": "^3.0.0",
-    "tinyglobby": "^0.2.12"
+    "tinyglobby": "^0.2.12",
+    "@bazel/runfiles": "6.3.1",
+    "@types/jasmine": "5.1.8",
+    "@types/jsdom": "21.1.7",
+    "@types/node": "24.0.7",
+    "playwright-core": "1.53.2",
+    "preact-render-to-string": "6.5.13",
+    "preact": "10.26.9",
+    "prettier": "3.6.2",
+    "typescript": "5.8.3",
+    "@angular/compiler": "workspace:*"
   },
   "exports": {
     "./styles/*": {
       "sass": "./styles/*"
+    }
+  },
+  "pnpm": {
+    "overrides": {
+      "@angular/material>@angular/core": "workspace:@angular/core@*",
+      "@angular/cdk>@angular/core": "workspace:@angular/core@*",
+      "@angular/material>@angular/common": "workspace:@angular/common@*",
+      "@angular/cdk>@angular/common": "workspace:@angular/common@*",
+      "@angular/material>@angular/common>@angular/core": "workspace:@angular/core@*",
+      "@angular/cdk>@angular/common>@angular/core": "workspace:@angular/core@*"
     }
   }
 }

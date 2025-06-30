@@ -1,5 +1,5 @@
 load("//adev/shared-docs:defaults.bzl", "ng_project", "ts_project")
-load("//tools:defaults.bzl", "karma_web_test_suite")
+load("//tools:defaults2.bzl", "ng_web_test_suite")
 
 package(default_visibility = ["//visibility:private"])
 
@@ -16,7 +16,7 @@ ng_project(
         "//adev/shared-docs/components/viewers:__pkg__",
     ],
     deps = [
-        "//:node_modules/@angular/cdk",
+        "//adev/shared-docs:node_modules/@angular/cdk",
         "//adev/shared-docs/components/icon:icon_rjs",
         "//packages/common:common_rjs",
         "//packages/core:core_rjs",
@@ -31,14 +31,14 @@ ts_project(
     ),
     deps = [
         ":copy-source-code-button_rjs",
-        "//:node_modules/@angular/cdk",
+        "//adev/shared-docs:node_modules/@angular/cdk",
         "//packages/core:core_rjs",
         "//packages/core/testing:testing_rjs",
         "//packages/platform-browser:platform-browser_rjs",
     ],
 )
 
-karma_web_test_suite(
+ng_web_test_suite(
     name = "test",
-    deps = [":test_lib"],
+    deps = [":test_lib_rjs"],
 )

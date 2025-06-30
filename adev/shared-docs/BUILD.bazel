@@ -1,10 +1,15 @@
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_ts//ts:defs.bzl", rules_js_tsconfig = "ts_config")
+load("@npm2//:defs.bzl", "npm_link_all_packages")
 load("//adev/shared-docs:defaults.bzl", "ng_project")
 load("//tools:defaults.bzl", "pkg_npm")
 load("//tools:defaults2.bzl", "ng_package")
 
 package(default_visibility = ["//visibility:public"])
+
+npm_link_all_packages(
+    name = "node_modules",
+)
 
 rules_js_tsconfig(
     name = "tsconfig_build",
@@ -22,7 +27,7 @@ rules_js_tsconfig(
     ],
     deps = [
         ":tsconfig_build",
-        "//:node_modules/@types/jasmine",
+        "//adev/shared-docs:node_modules/@types/jasmine",
     ],
 )
 
