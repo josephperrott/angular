@@ -48,3 +48,6 @@ minimumReleaseAgeExclude:
   - '@ngtools/webpack'
   - '@schematics/*'
   - 'ng-packagr'
+
+catalog:
+  typescript: 5.9.3

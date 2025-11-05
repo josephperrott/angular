@@ -261,7 +261,7 @@
   },
   "dependencies": {
     "@angular/language-service": "workspace:*",
-    "typescript": "5.9.3"
+    "typescript": "catalog:"
   },
   "devDependencies": {
     "@types/jasmine": "~5.1.9",
